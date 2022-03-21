@@ -43,6 +43,22 @@ public class StudentService {
 
         return onestudent;
     }
+
+    public Student updateStudent(Student student)
+    {
+
+        Student existingStudent= new Student();
+        if(student!=null) {
+            existingStudent = studentRepository.findById(student.getId()).orElse(null);
+
+            existingStudent.setFirstName(student.getFirstName());
+            existingStudent.setCollegeName(student.getCollegeName());
+
+            studentRepository.save(existingStudent);
+        }
+        return existingStudent;
+
+    }
     public List<Student> gettnameStudentbyName(String name)
     {
         List<Student>studentList=studentRepository.findByFirstName(name);
