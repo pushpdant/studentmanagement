@@ -3,22 +3,24 @@ package com.example.edu.studentmanagement.controler;
 import com.example.edu.studentmanagement.model.Student;
 import com.example.edu.studentmanagement.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/student")
 public class StudentControler{
     @Autowired
     StudentService studentService;
 
     @GetMapping("/readall")
-    public List<Student> gettallStudent()
+    public String gettallStudent(Model model)
     {
-
-        return studentService.getallStudent();
+        model.addAttribute("students",studentService.getallStudent());
+        return "list-student";
     }
     @GetMapping("/{id}")
     public Student gettIdStudent(@PathVariable Long id)
@@ -42,8 +44,29 @@ public class StudentControler{
         return studentService.getcollegeStudentbyName(cname);
     }
     @PostMapping("/create")
-    public Student createStudent(@RequestBody Student student){
-        return studentService.createStudent(student);
+    public String createStudent(@ModelAttribute Student student){
+
+        studentService.createStudent(student);
+        return "redirect:/student/readall";
+    }
+
+    @GetMapping("/add")
+    public String showAddStudentForm(@ModelAttribute Student student){
+        return "add-student";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String updateStudentForm(@PathVariable ("id")Long id, Model model )
+    {
+
+        model.addAttribute("student",studentService.gettIdStudent(id));
+        return "update-student";
+    }
+    @PostMapping("/edit")
+    public String edStudentForm(@ModelAttribute Student student)
+    {
+
+        return "redirect:/student/readall";
     }
 }
 
