@@ -14,7 +14,7 @@
 
 <div th:replace="fragments/navigation::navbar"></div>
 
-<form th:action="@{/student/edit}" method="post" th:object="${student}" >
+<form th:action="@{/student/edit/{id}(id=${student.id})}" method="post" th:object="${student}" >
     <div class="mb-3">
         <label for="Name" class="form-label">ID</label>
         <input type="text" class="form-control" id="id" aria-describedby="emailHelp" th:field="*{id}">
@@ -28,7 +28,5 @@
     </div>
     <button type="submit" class="btn btn-primary">Add Student</button>
 </form>
-
-
 </body>
 </html>
